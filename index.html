@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>TODOリスト</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <script>
+        //ここにJavaScriptを記述していく
+        window.addEventListener('load', function() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register("/sw.js")
+                    .then(function(registration) {
+                        console.log("serviceWorker registed.");
+                    }).catch(function(error) {
+                        console.warn("serviceWorker error.", error);
+                    });
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="app" class="bg-light">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-center text-white bg-primary rounded text-center p-2 mt-2">あなたのToDoリスト</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+
+                    <label v-for="label in options">
+                        <div class="p-2 m-2 bg-info rounded text-white">
+              <input type="radio"
+                v-model="current"
+                v-bind:value="label.value">
+                {{ label.label }}
+            </div>
+                   </label>
+                    <div class="row">
+                        <div class="col-6 offset-3 bg-info text-white rounded">
+                            （{{ computedTodos.length }} 件を表示）
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 text-center">
+                    <!--リスト用テーブル -->
+            <table>
+                <thead v-pre>
+                    <tr>
+                        <th class="id">ID</th>
+                        <th class="comment">コメント</th>
+                        <th class="state">状態</th>
+                        <th class="button">-</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--ToDo の要素をループ -->
+                    <tr v-for="item in computedTodos" v-bind:key="item.id" v-bind:class="{done:item.state}">
+                        <th>{{ item.id }}</th>
+                        <td>{{ item.comment }}</td>
+                        <td class="state">
+                            <!--状態変更ボタン -->
+                            <button v-on:click="doChangeState(item)">
+              {{ labels[item.state] }}
+            </button>
+                        </td>
+                        <td class="button">
+                            <!-- 削除ボタン -->
+                            <button v-on:click="doRemove(item)">
+              削除
+            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-10 offset-1 rounded text-center bg-primary mt-3 p-2 text-white">
+                    <h3>新しい作業の追加</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10 offset-1 rounded text-center bg-primary mt-3 p-2 text-white">
+                    <form class="add-form" v-on:submit.prevent="doAdd">
+                        <!-- コメント入力フォーム -->
+                        コメント <input type="text" ref="comment">
+                        <!-- 追加ボタンのモック -->
+                        <button type="submit">追加</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="main.js"></script>
+
+
+</body>
+</html>

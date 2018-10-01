@@ -1,0 +1,22 @@
+{
+  "short_name": "TODOリスト",
+
+
+  "name": "TODOリスト",
+
+
+  "start_url": "index.html",
+
+
+  "display": "standalone",
+
+    "icons": [
+    {
+      "src": "image/icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "background_color": "#2196F3",
+  "orientation": "portrait"
+}
